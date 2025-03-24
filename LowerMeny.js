@@ -55,7 +55,7 @@ function LowerMeny() {
 LowerMeny.prototype.postItMaker = function () {
 
     var boardRect = this.board.getBoundingClientRect();
-    console.log(boardRect)
+    
 
     document.getElementById("postItBtn").addEventListener("click", function () {
 
@@ -124,15 +124,10 @@ LowerMeny.prototype.postItMaker = function () {
                 this.allPostIts.push(newPostIt);
                 var id = Math.floor(Date.now() / 1000);
 
-                //var boardRect = this.board.getBoundingClientRect();
-                console.log(boardRect.top)
-                console.log(boardRect)
-                var minTop = 80;
+                var margin = 80;
 
-                var left = Math.random() * (boardRect.width - newPostIt.postItDiv.offsetWidth);
-                var top = Math.random() * (boardRect.height - newPostIt.postItDiv.offsetHeight - minTop) + minTop;
-                console.log(left)
-                console.log(top)
+                var left = Math.random() * (boardRect.width - newPostIt.postItDiv.offsetWidth - margin * 2) + margin;
+                var top = Math.random() * (boardRect.height - newPostIt.postItDiv.offsetHeight - margin * 2) + margin;
 
                 newPostIt.postItDiv.style.position = "absolute";
                 newPostIt.postItDiv.style.left = left + "px";
@@ -150,7 +145,7 @@ LowerMeny.prototype.postItMaker = function () {
             this.updateCounter();
         }.bind(this));
 
-        document.addEventListener("mousedown", function (e) {
+        document.addEventListener("touchstart", function (e) {
             if (!popupDiv.contains(e.target) && e.target !== this.postItBtn) {
                 popupDiv.remove();
             }
@@ -173,19 +168,21 @@ LowerMeny.prototype.movePostIt = function () {
     /**
      * För att spara positionen innan post-its dras
      */
-    document.addEventListener("mousedown", function () {
+    document.addEventListener("touchstart", function () {
+
         for (var i = 0; i < this.allPostIts.length; i++) {
             var postIt = this.allPostIts[i];
             postIt.originalX = postIt.postItDiv.offsetLeft;
             postIt.originalY = postIt.postItDiv.offsetTop;
         }
 
+
     }.bind(this))
 
     /**
      * Raderar pos-it om den är över soptunnan och flyttar tillbaka den om den dras och släpps utanför tavlan
      */
-    document.addEventListener("mouseup", function () {
+    document.addEventListener("touchend", function () {
 
         var trashRect = this.trashCan.getBoundingClientRect();
         var boardRect = this.board.getBoundingClientRect();
@@ -194,7 +191,10 @@ LowerMeny.prototype.movePostIt = function () {
             var postIt = this.allPostIts[i];
             var postRect = postIt.postItDiv.getBoundingClientRect();
 
-            if (!this.elementsAreNotOverlapping(postRect, trashRect)) {
+            if (!(postRect.right < trashRect.left ||
+                postRect.left > trashRect.right ||
+                postRect.bottom < trashRect.top ||
+                postRect.top > trashRect.bottom)) {
                 this.removeFromLocalStorage(postIt.id);
                 postIt.postItDiv.remove();
                 this.allPostIts.splice(i, 1);
@@ -203,7 +203,11 @@ LowerMeny.prototype.movePostIt = function () {
             }
             this.updatePosition(postIt);
 
-            if (this.elementsAreNotOverlapping(postRect, boardRect)) {
+            if ((postRect.left < boardRect.left ||
+                postRect.right > boardRect.right ||
+                postRect.top < boardRect.top ||
+                postRect.bottom > boardRect.bottom)) {
+                
                 postIt.postItDiv.style.left = postIt.originalX + "px";
                 postIt.postItDiv.style.top = postIt.originalY + "px";
                 this.updatePosition(postIt);
@@ -231,24 +235,6 @@ LowerMeny.prototype.updateCounter = function () {
     } else {
         this.postItBtn.disabled = false;
     }
-}
-
-
-/**
- * Kollar om elementen inte överlappar 
- * @param {number} firstRect - första rect
- * @param {number} secondRect - andra rect
- * @returns {boolean}
- */
-LowerMeny.prototype.elementsAreNotOverlapping = function (firstRect, secondRect) {
-
-    return (
-        firstRect.right < secondRect.left ||
-        firstRect.left > secondRect.right ||
-        firstRect.bottom < secondRect.top ||
-        firstRect.top > secondRect.bottom
-    );
-
 }
 
 
@@ -338,10 +324,17 @@ LowerMeny.prototype.updatePosition = function (postIt) {
  */
 LowerMeny.prototype.wheatherHandler = function () {
 
-    //var blowing = localStorage.getItem("wind");
-    var blowing = 0;
-    //var raining = localStorage.getItem("rain");
-    var raining = 0;
+    var blowing = localStorage.getItem("wind");
+   
+    var raining = localStorage.getItem("rain");
+
+    /**
+     * Simulering av väder
+     *  var blowing = 0;
+        var raining = 0;
+     * 
+     */
+   
 
     var background = document.getElementById("holder");
 

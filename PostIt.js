@@ -43,25 +43,29 @@ function PostIt(content) {
          */
         var offsetX, offsetY;
 
-        this.postItDiv.addEventListener('mousedown', function (e) {
+        this.postItDiv.addEventListener("touchstart", function (e) {
             dragged = true;
 
-            offsetX = e.clientX - this.postItDiv.offsetLeft;
-            offsetY = e.clientY - this.postItDiv.offsetTop;
+            var touch = e.touches[0];
+            offsetX = touch.clientX - this.postItDiv.offsetLeft;
+            offsetY = touch.clientY - this.postItDiv.offsetTop;
 
             this.postItDiv.style.zIndex = Math.floor(Date.now() / 1000);
 
+            e.preventDefault();
         }.bind(this));
 
-        document.addEventListener('mousemove', function (e) {
+        document.addEventListener("touchmove", function (e) {
             if (dragged) {
+                var touch = e.touches[0];
                 //this.postItDiv.style.position = 'absolute';
-                this.postItDiv.style.left = e.clientX - offsetX + 'px';
-                this.postItDiv.style.top = e.clientY - offsetY + 'px';
+                this.postItDiv.style.left = touch.clientX - offsetX + 'px';
+                this.postItDiv.style.top = touch.clientY - offsetY + 'px';
             }
+            e.preventDefault();
         }.bind(this));
 
-        document.addEventListener('mouseup', function () {
+        document.addEventListener("touchend", function () {
             dragged = false;
         }.bind(this));
     }

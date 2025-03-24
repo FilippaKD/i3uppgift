@@ -50,13 +50,6 @@ body {
 
 /* nedre menyn*/
 
-#box {
-    height: 60px;
-    width: 60px;
-    background-image: url(../img/stängdLåda.svg);
-    background-repeat: no-repeat;
-    z-index: 1;
-}
 
 #trashCan {
     height: 50px;
@@ -65,12 +58,7 @@ body {
     background-repeat: no-repeat;
 }
 
-#box:hover {
-    background-image: url(../img/öppenLåda.svg);
-    background-repeat: no-repeat;
-}
-
-#trashCan:hover {
+.openTrash {
     background-image: url(../img/öppenSoptunna.svg);
     background-repeat: no-repeat;
 }
@@ -295,4 +283,9 @@ textarea {
     font-size: 25px;
     font-weight: bold; 
     float: left;
+}
+
+#noInternet {
+    padding: 30px;
+    font-size: 15px;
 }

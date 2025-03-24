@@ -107,7 +107,7 @@ UpperMeny.prototype.fetchWheater = function (lat, lon) {
              * @type {number}
              */
             var temperature = forecast.parameters.find(p => p.name == "t").values[0];
-            this.currentTemp.innerText = Math.round(temperature) + "°C";
+    
             document.getElementById("sideMenyTemp").innerText = Math.round(temperature) + "°C";
 
             /**
@@ -167,6 +167,8 @@ UpperMeny.prototype.fetchWheater = function (lat, lon) {
             document.getElementById("rainAndWind").innerText = descripton + postItDanger;
             document.getElementById("wheatherImg").innerText = wheatherEmoji;
 
+            this.currentTemp.innerText = Math.round(temperature) + "°C" + wheatherEmoji;
+    
             var wheatherScroll = document.getElementById("wheatherScroll");
             wheatherScroll.innerText = "";
 
@@ -244,7 +246,7 @@ UpperMeny.prototype.displayWheather = function () {
         sideMeny.style.display = "block";
     });
 
-    document.addEventListener("click", function (e) {
+    document.addEventListener("touchstart", function (e) {
         if (!sideMeny.contains(e.target) && e.target !== document.getElementById("hamburgerMeny")) {
             sideMeny.style.display = "none";
             sideMeny.style.zIndex = Math.floor(Date.now() / 1000);
