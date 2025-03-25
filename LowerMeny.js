@@ -180,7 +180,7 @@ LowerMeny.prototype.movePostIt = function () {
     }.bind(this))
 
     /**
-     * Raderar pos-it om den är över soptunnan och flyttar tillbaka den om den dras och släpps utanför tavlan
+     * Raderar post-it om den är över soptunnan och flyttar tillbaka den om den dras och släpps utanför tavlan
      */
     document.addEventListener("touchend", function () {
 
@@ -195,6 +195,14 @@ LowerMeny.prototype.movePostIt = function () {
                 postRect.left > trashRect.right ||
                 postRect.bottom < trashRect.top ||
                 postRect.top > trashRect.bottom)) {
+                this.trashCan.style.background = "url(../img/öppenSoptunna.svg)";
+                this.trashCan.style.backgroundRepeat = "no-repeat";
+
+                setTimeout(() => {
+                    this.trashCan.style.background = "url(../img/stängdSoptunna.svg)";
+                    this.trashCan.style.backgroundRepeat = "no-repeat";
+                }, 1000)
+
                 this.removeFromLocalStorage(postIt.id);
                 postIt.postItDiv.remove();
                 this.allPostIts.splice(i, 1);
@@ -240,7 +248,7 @@ LowerMeny.prototype.updateCounter = function () {
 
 
 /**
- * Sparar post-it till localstorage, returnerar en tom array om det inte finns några
+ * Sparar post-it till localstorage, blir en tom array om det inte finns några
  * @param {number} id - för att hålla koll på specifik instans av post-it
  * @param {string} content - textinnehåll för post-it
  * @param {number} left - horisontell position
@@ -257,7 +265,7 @@ LowerMeny.prototype.saveToLocalStorage = function (id, content, left, top) {
 
 
 /**
- * Hämtar alla sparade post-its, returnerar en tom array om det inte finns några
+ * Hämtar alla sparade post-its, blir en tom array om det inte finns några
  * @returns {void}
  */
 LowerMeny.prototype.loadSavedPostIts = function () {
@@ -325,17 +333,15 @@ LowerMeny.prototype.updatePosition = function (postIt) {
 LowerMeny.prototype.wheatherHandler = function () {
 
     var blowing = localStorage.getItem("wind");
-   
     var raining = localStorage.getItem("rain");
 
     /**
-     * Simulering av väder
+     * För simulering av väder
      *  var blowing = 0;
         var raining = 0;
      * 
      */
    
-
     var background = document.getElementById("holder");
 
     if (blowing > 5) {

@@ -131,7 +131,7 @@ UpperMeny.prototype.fetchWheater = function (lat, lon) {
             localStorage.setItem("wind", wind);
             localStorage.setItem("rain", rain);
 
-            /* för simulering av väder
+            /* För simulering av väder
             var temperature = 0;
             var wind = 0;
             var rain = 0;
@@ -196,9 +196,7 @@ UpperMeny.prototype.fetchWheater = function (lat, lon) {
                     hourEmoji = "☀️";
                 }
 
-                /**
-                 * Behållare för väderdatan och timme
-                 */
+               
                 var wheatherBoxs = document.createElement("div");
                 wheatherBoxs.className = "wheatherBoxs";
                 var wheatherDiv = document.createElement("div");
@@ -216,9 +214,6 @@ UpperMeny.prototype.fetchWheater = function (lat, lon) {
         .then(response => response.json())
         .then(data => {
             if (data) {
-                /**
-                 * Uppdaterar platsinfomation beroende på vad som hittas 
-                 */
                 this.currentLocation.innerHTML = data.address.city || data.adress.county || data.adress.country;
             } else {
                 this.currentLocation.innerHTML = "Okänd plats";
